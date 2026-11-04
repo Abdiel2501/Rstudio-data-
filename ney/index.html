@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ney la mejor maestra</title>
+<script>document.documentElement.classList.add('intro')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink:#ff6fd0; --pink-soft:#ffc2ea; --lilac:#a99cf5; --teal:#5ee0e0;
+    --lime:#c7e02e; --yellow:#ffe45e; --red:#f43f56; --ink:#3a2a4a; --text:#4a4452;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%}
+  body{
+    font-family:'Nunito',system-ui,sans-serif;
+    color:var(--text);
+    background:repeating-linear-gradient(90deg,#ffc6ec 0 38px,#ffb3e4 38px 76px);
+    overflow-x:hidden;
+  }
+
+  /* ---------- Escenario ---------- */
+  .stage{
+    position:relative; min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    padding:150px 18px 170px;
+  }
+
+  /* ---------- Hoja de papel ---------- */
+  .card{
+    position:relative; z-index:2;
+    width:100%; max-width:720px;
+    background:
+      radial-gradient(circle at 18px 22px,#ffa6df 0 7px,transparent 8px) 0 0/44px 44px repeat-x,
+      linear-gradient(#fffaf1,#fffaf1);
+    background-size:44px 44px,100% 100%;
+    background-repeat:repeat-x,no-repeat;
+    border-radius:26px 44px 30px 40px / 40px 26px 44px 30px;
+    padding:70px clamp(22px,6vw,56px) 44px;
+    text-align:center;will-change:transform;
+    box-shadow:0 0 0 6px #fff, 0 0 0 9px #ffa6df55, 0 18px 40px rgba(190,60,150,.28);
+    animation:pop 1.1s cubic-bezier(.34,1.56,.64,1) 3.5s backwards,breathe 5s ease-in-out 4.8s infinite;
+  }
+  .card::before{ /* borde punteado interior */
+    content:""; position:absolute; inset:14px; border-radius:22px 36px 26px 32px;
+    border:2.5px dashed #ffb3e4; pointer-events:none;
+  }
+  .card::after{ /* esquina doblada */
+    content:""; position:absolute; right:-2px; bottom:-2px; width:46px; height:46px;
+    background:linear-gradient(135deg,transparent 50%,#ffe0f5 50%);
+    border-radius:0 0 40px 0; box-shadow:-3px -3px 6px rgba(190,60,150,.12);
+  }
+
+  h1{
+    font-family:'Fredoka',sans-serif; font-weight:700;
+    font-size:clamp(2.7rem,10vw,4.8rem); line-height:1.02;
+    letter-spacing:.01em; margin-bottom:26px;
+    color:var(--pink);
+    text-shadow:0 3px 0 rgba(255,255,255,.9);
+  }
+  h1 .w{display:inline-block;white-space:nowrap;margin:0 .12em}
+  h1 i{font-style:normal;display:inline-block;animation:letterIn .8s cubic-bezier(.34,1.56,.64,1) calc(4.3s + var(--n)*.06s) backwards,hop 3.2s ease-in-out calc(6.4s + var(--n)*.12s) infinite}
+  h1 i:nth-child(5n+1){color:#ff6fd0}
+  h1 i:nth-child(5n+2){color:#ffd23f}
+  h1 i:nth-child(5n+3){color:#b7d62b}
+  h1 i:nth-child(5n+4){color:#4fd6d6}
+  h1 i:nth-child(5n+5){color:#a99cf5}
+
+  .kicker{font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(1.05rem,3.8vw,1.35rem);color:#e0479b;letter-spacing:.04em;margin:-8px 0 20px}
+  .highlight{
+    display:inline-block; max-width:100%;
+    font-family:'Fredoka',sans-serif; font-weight:600;
+    font-size:clamp(1.25rem,4.6vw,1.9rem); line-height:1.25;
+    color:var(--ink);
+    background:#fff3a6; border:3px solid #fff; border-radius:24px 30px 22px 28px;
+    padding:14px 26px; margin-bottom:30px;
+    box-shadow:0 5px 0 #ffd84d, 0 10px 20px rgba(255,200,60,.35);
+    transform:rotate(-1.5deg);
+  }
+
+  .letter{
+    font-size:clamp(1.02rem,3.6vw,1.2rem); line-height:1.85;
+    color:#4a4452; max-width:60ch; margin:0 auto 32px;
+  }
+
+  .sign{
+    font-family:'Caveat',cursive; font-weight:700;
+    font-size:clamp(1.7rem,6vw,2.3rem); line-height:1.25; color:#e0479b;
+  }
+  .sign small{display:block;font-size:.78em;color:#a2589c;margin-top:2px}
+
+  /* ---------- Corazón en CSS (em) ---------- */
+  .heart{position:relative;display:inline-block;font-size:18px;width:2em;height:1.8em;vertical-align:-.15em;margin-left:.25em}
+  .heart::before,.heart::after{
+    content:"";position:absolute;left:1em;top:0;width:1em;height:1.6em;
+    background:var(--c,var(--red));border-radius:1em 1em 0 0;
+    transform:rotate(-45deg);transform-origin:0 100%;
+  }
+  .heart::after{left:0;transform:rotate(45deg);transform-origin:100% 100%}
+  .sign .heart{animation:beat 1.4s ease-in-out infinite}
+
+  .mini-star{display:inline-block;width:1em;height:1em;margin-left:.3em;vertical-align:-.1em;background:#ffd23f;clip-path:polygon(50% 2%,62% 35%,98% 36%,69% 58%,80% 93%,50% 72%,20% 93%,31% 58%,2% 36%,38% 35%);animation:beat 1.4s ease-in-out infinite}
+
+  /* ---------- Stickers ---------- */
+  .sticker{
+    position:absolute; z-index:1; pointer-events:none;
+    scale:var(--k,1);will-change:transform;
+    filter:
+      drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff)
+      drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff)
+      drop-shadow(0 7px 7px rgba(170,50,130,.3));
+    animation:float var(--d,6s) ease-in-out var(--dl,0s) infinite,stickerIn 1s cubic-bezier(.34,1.56,.64,1) calc(3.9s + var(--i,0)*.09s) backwards;
+  }
+  .spin{animation:spin var(--d,16s) linear infinite,stickerIn 1s cubic-bezier(.34,1.56,.64,1) calc(3.9s + var(--i,0)*.09s) backwards}
+
+  /* carita kawaii */
+  .face{
+    position:absolute; left:50%; top:var(--fy,50%); width:52px; height:26px;
+    transform:translate(-50%,-50%) scale(var(--fs,1));
+    background:
+      radial-gradient(circle at 2px 78%,rgba(255,92,150,.55) 0 6px,transparent 7px),
+      radial-gradient(circle at 50px 78%,rgba(255,92,150,.55) 0 6px,transparent 7px);
+  }
+  .face::before{content:"";position:absolute;left:9px;top:3px;width:7px;height:10px;border-radius:50%;background:var(--ink);box-shadow:27px 0 0 var(--ink)}
+  .face::after{content:"";position:absolute;left:21px;top:13px;width:10px;height:6px;border-radius:0 0 10px 10px;background:#ff5c8f;border:2px solid var(--ink);border-top-width:1px}
+
+  .star{width:72px;height:72px}
+  .star .s{position:absolute;inset:0;background:var(--c,var(--yellow));clip-path:polygon(50% 2%,62% 35%,98% 36%,69% 58%,80% 93%,50% 72%,20% 93%,31% 58%,2% 36%,38% 35%)}
+  .star .face{--fy:56%;--fs:.62}
+  .star.sm{width:34px;height:34px}
+
+  .pencil{width:62px;height:190px;--r:-28deg}
+  .pencil .b{
+    position:absolute;inset:0;
+    clip-path:polygon(4% 0,96% 0,96% 76%,50% 100%,4% 76%);
+    border-radius:10px 10px 0 0;
+    background:linear-gradient(#ff8fc0 0 11%,#d7dbe8 11% 15%,var(--body,#ffe45e) 15% 75%,#f8d9a8 75%);
+  }
+  .pencil .b::after{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:18px;height:22px;background:var(--ink);clip-path:polygon(50% 100%,0 0,100% 0)}
+  .pencil .face{--fy:45%;--fs:.8}
+  .crayon{--body:#4fd6d6}
+  .crayon .b{background:
+      linear-gradient(transparent 0 30%,var(--ink) 30% 34%,transparent 34% 40%,var(--ink) 40% 44%,transparent 44% 50%,var(--ink) 50% 54%,transparent 54%),
+      linear-gradient(#7aeaea 0 12%,#4fd6d6 12% 74%,#4fd6d6 74%);
+    clip-path:polygon(4% 0,96% 0,96% 70%,50% 100%,4% 70%)}
+  .crayon .b::after{background:#3fb9b9}
+
+  .eraser{width:96px;height:56px}
+  .eraser .b{position:absolute;inset:0;border-radius:14px;background:linear-gradient(90deg,#ff7ae0 0 50%,#b9a8ff 50%)}
+  .eraser .face{--fy:52%;--fs:.8}
+
+  .flower{width:92px;height:92px}
+  .flower span{position:absolute;left:30px;top:30px;width:32px;height:32px;border-radius:50%;background:var(--c,#ff8fc8);transform:rotate(var(--r)) translateY(-25px)}
+  .flower .core{width:38px;height:38px;left:27px;top:27px;transform:none;background:#ffe45e}
+  .flower .face{--fs:.55;--fy:50%;z-index:2}
+
+  .cloud{width:116px;height:48px}
+  .cloud .b{position:absolute;inset:0;border-radius:24px;background:#c9ecff}
+  .cloud .b::before,.cloud .b::after{content:"";position:absolute;background:#c9ecff;border-radius:50%}
+  .cloud .b::before{width:54px;height:54px;left:16px;top:-26px}
+  .cloud .b::after{width:42px;height:42px;left:58px;top:-18px}
+  .cloud .face{--fs:.8;--fy:55%}
+
+  .h1s{width:50px;height:46px;font-size:25px}
+  .h1s .heart{margin:0}
+
+  /* posiciones (escritorio) */
+  .p-crayon{top:34px;left:5%;rotate:-32deg;--d:7s}
+  .p-eraser{top:46px;left:34%;rotate:-8deg;--k:.9;--d:6s;--dl:-2s}
+  .p-star1{top:44px;right:6%;--k:1.2;--d:8s}
+  .p-heart1{top:120px;right:22%;--k:.9;--d:5s;--dl:-1s}
+  .p-flower1{top:34%;left:3%;--d:9s}
+  .p-cloud{top:44%;right:2.5%;--d:7s;--dl:-3s}
+  .p-pencil{bottom:30px;left:6%;rotate:24deg;--d:7s;--dl:-1s}
+  .p-star2{bottom:50px;right:7%;--k:1.3;--d:9s;--dl:-2s}
+  .p-flower2{bottom:36px;left:34%;--k:.9;--d:8s;--dl:-4s}
+  .p-heart2{bottom:120px;right:24%;--k:1;--d:6s}
+  .p-sm1{top:23%;left:15%;--d:5s}
+  .p-sm2{top:62%;right:12%;--d:6s;--dl:-2s}
+  .p-sm3{bottom:22%;left:14%;--d:7s}
+
+  html.intro .stage{visibility:hidden}
+
+  /* ---------- Cielo de entrada ---------- */
+  .sky{
+    position:fixed;inset:0;z-index:45;pointer-events:none;overflow:hidden;
+    background:
+      radial-gradient(ellipse at 50% 112%,#ffc2ea 0,transparent 55%),
+      radial-gradient(ellipse 45% 30% at 18% 28%,rgba(255,120,220,.38),transparent 70%),
+      radial-gradient(ellipse 40% 28% at 84% 22%,rgba(90,200,255,.30),transparent 70%),
+      radial-gradient(ellipse 50% 30% at 62% 58%,rgba(170,120,255,.30),transparent 70%),
+      linear-gradient(180deg,#1c0f45 0%,#4e2d8c 42%,#c35bc0 78%,#ff9ad5 100%);
+    animation:skyOut .95s ease 3.4s forwards;
+  }
+  .sky .mw{position:absolute;left:-25%;right:-25%;top:24%;height:34%;background:radial-gradient(ellipse at center,rgba(255,255,255,.2),rgba(255,210,245,.08) 45%,transparent 68%);transform:rotate(-16deg)}
+  .sky svg{position:absolute;inset:0;width:100%;height:100%}
+  .sky .ln{fill:none;stroke:rgba(255,255,255,.85);stroke-width:1.6;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:draw .7s ease forwards var(--d)}
+  .sky .tw{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--t) ease-in-out var(--d) infinite;opacity:0}
+  .sky .sp{
+    position:absolute;
+    background:
+      linear-gradient(#fff,#fff) center/2px 70% no-repeat,
+      linear-gradient(#fff,#fff) center/70% 2px no-repeat,
+      radial-gradient(circle,#fff 0 11%,rgba(255,190,240,.65) 28%,transparent 62%);
+    animation:spPop .8s cubic-bezier(.34,1.56,.64,1) var(--d) backwards,twinkle2 2.4s ease-in-out calc(var(--d) + .8s) infinite;
+  }
+  .sky .moon{position:absolute;top:9%;right:11%;width:62px;height:62px;border-radius:50%;box-shadow:inset -17px 6px 0 0 #fff4b8,0 0 34px rgba(255,244,184,.55);animation:spPop 1s cubic-bezier(.34,1.56,.64,1) .9s backwards}
+  .sky .shoot{position:absolute;width:130px;height:3px;border-radius:3px;background:linear-gradient(90deg,transparent,#fff);opacity:0;animation:shoot 1.2s ease-in var(--d) forwards}
+  .sky .skytext{
+    position:absolute;left:0;right:0;top:44%;text-align:center;
+    font-family:'Caveat',cursive;font-weight:700;color:#fff;
+    font-size:clamp(2.4rem,10vw,5rem);line-height:1.1;padding:0 16px;
+    text-shadow:0 0 18px #ff9ad5;
+    animation:textIn 1.6s ease 1.5s backwards;
+  }
+  .sky .skytext small{display:block;font-family:'Fredoka',sans-serif;font-weight:500;font-size:.32em;letter-spacing:.28em;text-transform:uppercase;margin-bottom:6px;opacity:.9}
+  .bloom{position:absolute;bottom:-8px;width:0;height:var(--h);transform-origin:50% 100%;animation:sway 4.5s ease-in-out var(--d) infinite alternate}
+  .bloom .stem{position:absolute;left:-2px;bottom:0;width:4px;height:100%;border-radius:4px;background:linear-gradient(#7be08a,#2f9e5b);transform-origin:50% 100%;animation:grow 1.2s cubic-bezier(.3,.7,.3,1) var(--d) backwards}
+  .bloom .leaf{position:absolute;bottom:34%;width:26px;height:11px;border-radius:50% 50% 50% 0;background:#5fcf7d;animation:leafIn .6s ease calc(var(--d) + .7s) backwards}
+  .bloom .leaf.l{right:2px;transform-origin:100% 100%;rotate:-28deg}
+  .bloom .leaf.r{left:2px;transform-origin:0 100%;scale:-1 1;rotate:-28deg;bottom:48%}
+  .bloom .head{position:absolute;left:calc(var(--s)/-2);top:calc(var(--s)/-2);width:var(--s);height:var(--s);animation:bloomIn 1.1s cubic-bezier(.34,1.56,.64,1) calc(var(--d) + 1s) backwards}
+  .bloom .head svg{width:100%;height:100%;display:block;}
+
+  /* ---------- Entrada ---------- */
+  .rise{animation:rise .9s cubic-bezier(.2,.8,.2,1) var(--rd,2s) backwards}
+  .curtain{position:fixed;inset:0;z-index:60;display:flex;pointer-events:none}
+  .curtain i{
+    flex:1;height:100%;border-radius:0 0 46px 46px;will-change:transform;
+    background:var(--c);box-shadow:inset -5px 0 0 rgba(255,255,255,.35),inset 6px -10px 0 rgba(0,0,0,.06);
+    animation:curtainUp 1s cubic-bezier(.7,0,.25,1) calc(.45s + var(--i)*.07s) forwards;
+  }
+  .confetti{position:fixed;inset:0;z-index:50;pointer-events:none;overflow:hidden}
+  .confetti{contain:layout paint}
+  .confetti .pc{position:absolute;left:0;top:0;will-change:transform,opacity}
+  .confetti .pc svg{display:block;width:100%;height:100%}
+  .pc.burst{animation:burst var(--t,2.2s) cubic-bezier(.15,.8,.3,1) forwards}
+  .pc.fall{animation:fall var(--t,4s) linear forwards}
+
+  /* ---------- Animaciones ---------- */
+  @keyframes skyOut{to{opacity:0}}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  @keyframes twinkle{0%,100%{opacity:0}50%{opacity:var(--o,.9)}}
+  @keyframes twinkle2{0%,100%{opacity:1}50%{opacity:.55}}
+  @keyframes spPop{0%{scale:0;opacity:0;rotate:-90deg}100%{scale:1;opacity:1;rotate:0deg}}
+  @keyframes shoot{0%{transform:translate(0,0) rotate(28deg);opacity:0}12%{opacity:1}100%{transform:translate(62vw,33vw) rotate(28deg);opacity:0}}
+  @keyframes textIn{0%{opacity:0;transform:translateY(24px) scale(.92)}100%{opacity:1;transform:none}}
+  @keyframes grow{0%{transform:scaleY(0)}100%{transform:scaleY(1)}}
+  @keyframes leafIn{0%{opacity:0;transform:scale(0)}100%{opacity:1;transform:scale(1)}}
+  @keyframes bloomIn{0%{transform:scale(0) rotate(-120deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}
+  @keyframes sway{0%{transform:rotate(-3deg)}100%{transform:rotate(3deg)}}
+  @keyframes spinSlow{to{transform:rotate(360deg)}}
+  @keyframes curtainUp{to{transform:translateY(-112%)}}
+  @keyframes pop{0%{transform:scale(.15) rotate(-12deg);opacity:0}60%{opacity:1}100%{transform:scale(1) rotate(0)}}
+  @keyframes stickerIn{0%{translate:0 90px;opacity:0}100%{translate:0 0;opacity:1}}
+  @keyframes letterIn{0%{transform:translateY(-70px) scale(.2) rotate(-30deg);opacity:0}100%{transform:none;opacity:1}}
+  @keyframes rise{0%{translate:0 26px;opacity:0}100%{translate:0 0;opacity:1}}
+  @keyframes burst{
+    0%{transform:translate(var(--x0),var(--y0)) scale(0) rotate(0);opacity:1}
+    55%{transform:translate(calc(var(--x0) + var(--dx)),calc(var(--y0) + var(--dy))) scale(1) rotate(var(--r));opacity:1}
+    100%{transform:translate(calc(var(--x0) + var(--dx)),calc(var(--y0) + var(--dy) + 260px)) scale(.7) rotate(calc(var(--r)*2));opacity:0}
+  }
+  @keyframes fall{
+    0%{transform:translate(var(--x0),-80px) rotate(0);opacity:1}
+    50%{transform:translate(calc(var(--x0) + var(--dx)),50vh) rotate(var(--r))}
+    100%{transform:translate(var(--x0),112vh) rotate(calc(var(--r)*2));opacity:1}
+  }
+  @keyframes float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-14px) rotate(5deg)}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.012)}}
+  @keyframes hop{0%,70%,100%{transform:translateY(0)}80%{transform:translateY(-8px)}90%{transform:translateY(0)}}
+  @keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.25)}30%{transform:scale(1)}45%{transform:scale(1.18)}}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:760px){
+    .stage{padding:140px 14px 160px}
+    .card{padding-top:64px}
+    .sticker{--k:.72}
+    .p-crayon{top:26px;left:3%}
+    .p-eraser{top:44px;left:38%}
+    .p-star1{top:30px;right:4%;--k:.95}
+    .p-heart1{top:96px;right:30%}
+    .p-pencil{bottom:22px;left:4%}
+    .p-star2{bottom:34px;right:5%;--k:1}
+    .p-flower2{bottom:28px;left:36%}
+    .p-heart2{bottom:92px;right:30%}
+    .p-flower1,.p-cloud,.p-sm1,.p-sm2,.p-sm3{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .curtain,.confetti,.sky{display:none}
+    *,*::before,*::after{animation:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="curtain" aria-hidden="true">
+  <i style="--c:#ed2939;--i:0"></i><i style="--c:#ff8c1a;--i:1"></i><i style="--c:#ffd400;--i:2"></i><i style="--c:#5bc236;--i:3"></i>
+  <i style="--c:#19c3c3;--i:4"></i><i style="--c:#3b82f6;--i:5"></i><i style="--c:#9b5de5;--i:6"></i><i style="--c:#ff4fb0;--i:7"></i>
+</div>
+<div class="sky" id="sky" aria-hidden="true"></div>
+<div class="confetti" id="confetti" aria-hidden="true"></div>
+
+<main class="stage">
+
+  <!-- Stickers decorativos (CSS puro) -->
+  <div class="sticker pencil crayon p-crayon" aria-hidden="true"><div class="b"></div><div class="face"></div></div>
+  <div class="sticker eraser p-eraser" aria-hidden="true"><div class="b"></div><div class="face"></div></div>
+  <div class="sticker star p-star1" style="--c:#8fe6f0" aria-hidden="true"><div class="s"></div><div class="face"></div></div>
+  <div class="sticker star p-heart1" style="--c:#ffb3e8" aria-hidden="true"><div class="s"></div><div class="face"></div></div>
+
+  <div class="sticker flower p-flower1" aria-hidden="true">
+    <span style="--r:0deg"></span><span style="--r:72deg"></span><span style="--r:144deg"></span><span style="--r:216deg"></span><span style="--r:288deg"></span>
+    <span class="core"></span><div class="face"></div>
+  </div>
+  <div class="sticker cloud p-cloud" aria-hidden="true"><div class="b"></div><div class="face"></div></div>
+
+  <div class="sticker pencil p-pencil" aria-hidden="true"><div class="b"></div><div class="face"></div></div>
+  <div class="sticker star p-star2" aria-hidden="true"><div class="s"></div><div class="face"></div></div>
+  <div class="sticker flower p-flower2" style="--c:#b9a8ff" aria-hidden="true">
+    <span style="--r:0deg"></span><span style="--r:72deg"></span><span style="--r:144deg"></span><span style="--r:216deg"></span><span style="--r:288deg"></span>
+    <span class="core"></span><div class="face"></div>
+  </div>
+  <div class="sticker star p-heart2" style="--c:#ffe45e" aria-hidden="true"><div class="s"></div><div class="face"></div></div>
+
+  <div class="sticker star sm spin p-sm1" aria-hidden="true"><div class="s"></div></div>
+  <div class="sticker star sm spin p-sm2" style="--c:#8fe6f0" aria-hidden="true"><div class="s"></div></div>
+  <div class="sticker star sm spin p-sm3" style="--c:#c7e02e" aria-hidden="true"><div class="s"></div></div>
+
+  <!-- Hoja principal -->
+  <article class="card">
+    <h1 class="rainbow">Ney la mejor maestra</h1>
+
+    <p class="kicker rise" style="--rd:4.9s">A la maestra más linda</p>
+    <div class="highlight rise" style="--rd:5.1s">Para la señorita Miel</div>
+
+    <p class="letter rise" style="--rd:5.4s">Sé que has tenido una semana cansada por los futuros exámenes y trabajos, pero me alegra mucho que estés saliendo adelante, adoro cada trazo y esfuerzo en tus trabajos y en cumplir tus sueños, la verdad es que soy espectador y admirador de ellos, adorno cada deseo que tengas que sobresalir y cuidar a tus niños, adoro cada sonrisa tuya, cada sueño que estás cumpliendo, cada mañana que te levantas y aún con sueño sigues tus sueños, adorooooo mucho de ti, amaría el día en verte salir por tu diploma y tú reconocimiento, y el futuro que tendrás, un futuro próspero con anhelo te deseo.</p>
+
+    <p class="sign rise" style="--rd:5.8s">Te quiero mucho<span class="mini-star" aria-hidden="true"></span><small>atte tu admirador A.A</small></p>
+  </article>
+</main>
+
+<script>
+  // Título multicolor: separa por palabra y letra (si falla, queda el título rosa normal)
+  (function(){
+    var h=document.querySelector('.rainbow'); if(!h) return;
+    var text=h.textContent.trim(), n=0; h.setAttribute('aria-label',text); h.textContent='';
+    text.split(' ').forEach(function(word){
+      var w=document.createElement('span'); w.className='w'; w.setAttribute('aria-hidden','true');
+      word.split('').forEach(function(ch){var i=document.createElement('i');i.textContent=ch;i.style.setProperty('--n',n++);w.appendChild(i)});
+      h.appendChild(w); h.appendChild(document.createTextNode(' '));
+    });
+  })();
+</script>
+<script>
+  // Cielo mágico: estrellas, constelaciones, luna, estrellas fugaces y flores que florecen
+  (function(){
+    var sky=document.getElementById('sky'); if(!sky) return;
+    var W=innerWidth,H=innerHeight,R=function(a,b){return a+Math.random()*(b-a)},pick=function(a){return a[Math.floor(Math.random()*a.length)]};
+    var h='';
+    // estrellitas de fondo
+    for(var i=0;i<70;i++){var z=R(1.5,3.6);h+='<i class="tw" style="left:'+R(0,100)+'%;top:'+R(0,78)+'%;width:'+z+'px;height:'+z+'px;--t:'+R(2,4.5)+'s;--d:'+R(0,3)+'s;--o:'+R(.5,1)+'"></i>'}
+    // constelaciones (coordenadas en %)
+    var cons=[
+      [[8,11],[15,21],[23,13],[31,22],[39,12]],
+      [[60,8],[66,12],[72,15],[78,19],[80,29],[91,28],[89,17],[78,19]],
+      [[42,4],[48,8],[54,4]],
+      [[12,62],[24,57],[36,61],[48,57],[60,62],[72,57],[84,61]]
+    ];
+    if(W>=600){cons.push([[6,40],[14,35],[21,43],[12,53],[6,40]]);cons.push([[80,41],[86,36],[93,42],[90,52],[82,49],[80,41]])}
+    var lines='',nodes='',t=1.2;
+    cons.forEach(function(c,ci){
+      c.forEach(function(p,j){
+        var d=(t+ci*.2+j*.15).toFixed(2),z=(j%3===0)?44:34;
+        nodes+='<i class="sp" style="left:calc('+p[0]+'% - '+z/2+'px);top:calc('+p[1]+'% - '+z/2+'px);width:'+z+'px;height:'+z+'px;--d:'+d+'s"></i>';
+        if(j>0){var q=c[j-1];lines+='<line class="ln" pathLength="1" x1="'+(q[0]*W/100).toFixed(1)+'" y1="'+(q[1]*H/100).toFixed(1)+'" x2="'+(p[0]*W/100).toFixed(1)+'" y2="'+(p[1]*H/100).toFixed(1)+'" style="--d:'+d+'s"/>'}
+      });
+    });
+    // estrellas brillantes sueltas
+    for(var m=0;m<16;m++){var zz=R(18,30);nodes+='<i class="sp" style="left:'+R(2,96)+'%;top:'+R(2,64)+'%;width:'+zz+'px;height:'+zz+'px;--d:'+R(.8,2.8).toFixed(2)+'s"></i>'}
+    h+='<i class="mw"></i>';
+    h+='<svg viewBox="0 0 '+W+' '+H+'">'+lines+'</svg>'+nodes;
+    h+='<i class="moon"></i>';
+    h+='<i class="shoot" style="left:6%;top:10%;--d:1.8s"></i><i class="shoot" style="left:34%;top:4%;--d:2.4s"></i><i class="shoot" style="left:-2%;top:36%;--d:3s"></i>';
+    h+='<div class="skytext"><small>con mucho cariño</small>Para la señorita Miel</div>';
+    // flores que crecen desde abajo
+    var pal=[['#ff7ac8','#ffc2ea'],['#a99cf5','#ded8ff'],['#ffd23f','#fff2a8'],['#ff8c7a','#ffd0c8'],['#4fd6d6','#bdf5f5'],['#ffffff','#ffd9f2']];
+    var n=W<600?7:12;
+    for(var k=0;k<n;k++){
+      var c=pick(pal),s=R(70,118)*(W<600?.8:1),hh=R(.12,.29)*H,x=(k+.5)/n*100+R(-3,3),p='';
+      for(var a=0;a<8;a++)p+='<ellipse cx="0" cy="-24" rx="11" ry="25" fill="'+c[0]+'" transform="rotate('+(a*45)+')"/>';
+      for(var a=0;a<8;a++)p+='<ellipse cx="0" cy="-15" rx="7.5" ry="16" fill="'+c[1]+'" transform="rotate('+(a*45+22.5)+')"/>';
+      var svg='<svg viewBox="-52 -52 104 104">'+p+'<circle r="10" fill="#ffd23f"/><circle r="10" fill="none" stroke="#ff9a3c" stroke-width="2" stroke-dasharray="2 4"/></svg>';
+      h+='<div class="bloom" style="left:'+x+'%;--h:'+hh+'px;--s:'+s+'px;--d:'+(1+k*.13).toFixed(2)+'s"><div class="stem"></div><i class="leaf l"></i><i class="leaf r"></i><div class="head">'+svg+'</div></div>';
+    }
+    sky.innerHTML=h;
+    setTimeout(function(){document.documentElement.classList.remove('intro')},3300);
+    setTimeout(function(){sky.remove()},4600);
+    setTimeout(function(){var c=document.querySelector('.curtain');if(c)c.remove()},2300);
+  })();
+</script>
+<script>
+  // Entrada: escalonar stickers, explosión de flores/estrellas y lluvia de colores
+  (function(){
+    document.querySelectorAll('.sticker').forEach(function(el,k){el.style.setProperty('--i',k)});
+    var box=document.getElementById('confetti'); if(!box) return;
+    var C=['#ed2939','#ff8c1a','#ffd400','#5bc236','#19c3c3','#3b82f6','#9b5de5','#ff4fb0','#ff9ad5'];
+    var R=function(a,b){return a+Math.random()*(b-a)};
+    var pick=function(a){return a[Math.floor(Math.random()*a.length)]};
+    function svg(kind,c){
+      if(kind==='star') return '<svg viewBox="0 0 60 60"><polygon fill="'+c+'" stroke="#fff" stroke-width="4" stroke-linejoin="round" points="30,4 37,22 56,23 41,35 46,54 30,43 14,54 19,35 4,23 23,22"/></svg>';
+      if(kind==='dot') return '<svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="22" fill="'+c+'" stroke="#fff" stroke-width="4"/></svg>';
+      var p='';for(var a=0;a<5;a++){var r=a*72*Math.PI/180;p+='<circle cx="'+(30+14*Math.sin(r)).toFixed(1)+'" cy="'+(30-14*Math.cos(r)).toFixed(1)+'" r="11" fill="'+c+'" stroke="#fff" stroke-width="2.5"/>'}
+      return '<svg viewBox="0 0 60 60">'+p+'<circle cx="30" cy="30" r="8" fill="#ffe45e" stroke="#fff" stroke-width="2"/></svg>';
+    }
+    function make(cls,x,y,t){
+      var kind=pick(['flower','flower','star','star','dot']), s=R(24,58), e=document.createElement('div');
+      e.className='pc '+cls; e.style.width=e.style.height=s+'px';
+      e.style.setProperty('--x0',x+'px'); e.style.setProperty('--y0',y+'px');
+      e.style.setProperty('--r',R(-540,540)+'deg'); e.style.setProperty('--t',t+'s');
+      e.innerHTML=svg(kind,pick(C)); box.appendChild(e);
+      setTimeout(function(){e.remove()},t*1000+300); return e;
+    }
+    function burst(cx,cy,n){
+      for(var k=0;k<n;k++){
+        var e=make('burst',cx,cy,R(1.8,2.8)), ang=R(0,Math.PI*2), d=R(120,Math.min(innerWidth,700)*.75);
+        e.style.setProperty('--dx',Math.cos(ang)*d+'px'); e.style.setProperty('--dy',Math.sin(ang)*d*.8-60+'px');
+      }
+    }
+    function rain(n){
+      for(var k=0;k<n;k++){
+        (function(){setTimeout(function(){
+          var e=make('fall',R(0,innerWidth-40),0,R(3.2,5.2));
+          e.style.setProperty('--dx',R(-60,60)+'px');
+        },k*130)})();
+      }
+    }
+    setTimeout(function(){burst(innerWidth/2,innerHeight/2,34)},3350);
+    setTimeout(function(){burst(innerWidth*.2,innerHeight*.75,10);burst(innerWidth*.8,innerHeight*.75,10)},3750);
+    setTimeout(function(){rain(22)},3950);
+    // Toca la pantalla para más estrellitas
+    addEventListener('pointerdown',function(ev){burst(ev.clientX,ev.clientY,10)});
+  })();
+</script>
+</body>
+</html>
